@@ -7,12 +7,11 @@ import math
 def function(x):
     return x*x
 
-# This is the optimizer, it will apply gradient descent
-# algorithm to find the local minimum of the function.
-# The input is a list of tuples (dy/dx , x) where the 
-# first element is the derivative of the cost function
-# with respect to the variable in the second position
-optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
+# this is the learning rate, it decides how mutch the
+# variable should be updated in one step of gradient
+# descent algorithm
+# X = X - lr * df/dX
+lr = 0.001
 
 # Random initialization of the X variable
 X = tf.Variable(initial_value=4.0,shape=())
@@ -24,7 +23,7 @@ post_function_x = sys.maxsize
 
 # We continue the execution of gradient descent until
 # |f(X) - f(X')| < epsilon
-epsilon = 0.001
+epsilon = 0.00001
 
 # iterations counter
 it = 0
@@ -49,7 +48,8 @@ while abs(prev_function_x - post_function_x) > epsilon:
 
         # Update the variable X performing one step of the
         # gradient descent algorithm
-        optimizer.apply_gradients([(g[0],X)])
+        # X = X - lr * df/dX
+        X.assign_sub(lr*g[0])
 
         # update the value of f(X) after applying
         # one step of gradient descent
